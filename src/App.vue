@@ -1,28 +1,22 @@
 <template>
   <v-app>
-    <div class="banner" v-bind:class="{'smallBanner': (e1 > 1 && !$vuetify.breakpoint.mobile)}"></div>
-      <v-container class="max-width" style="padding: 0;">
-          <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'hide-footer': (e1 > 1)}" >
-            <v-col md=10 class="my-auto">
-              <input type="text" name="" id="" placeholder="Search by name (enter al lest 3 letters)" class="input-search">
-            </v-col>
-            <v-col md=2>
-              <v-btn
-                color="success"
-                width="100%"
-              >
-                SEARCH
-              </v-btn>
-            </v-col>
-            
-          </v-row>
-          <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'show': (e1 > 1)}" class="hide-footer">
-            <v-col cols=12>
-              <v-btn @click="e1--; resetTitle()" color="success">back</v-btn>
-            </v-col>
-          </v-row>
-          <v-stepper v-model="e1" :vertical="$vuetify.breakpoint.mobile">
-            <v-stepper-header id="stepper_header">
+    <div class="banner d-none" v-bind:class="{'smallBanner': (e1 > 1), 'd-block' : !$vuetify.breakpoint.mobile}"></div>
+    <div class="banner-mobile d-none" v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}">
+      <MainSearch v-bind:step="e1" v-bind:mobile="true"/>
+    </div>
+    <v-container class="max-width" style="padding: 0;">
+        <!-- MAIN SEARCH -->
+        <MainSearch v-if="!$vuetify.breakpoint.mobile" v-bind:step="e1" v-bind:mobile="false"/>
+        <!-- BACK BUTTON -->
+        <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'show': (e1 > 1)}" class="hide-footer">
+          <v-col cols=12>
+            <v-btn @click="e1--; resetTitle()" color="success">back</v-btn>
+          </v-col>
+        </v-row>
+        <!-- STEPPER -->
+        <v-stepper v-model="e1" :vertical="$vuetify.breakpoint.mobile">
+          <v-stepper-header id="stepper_header">
+            <div class="horizontal-scroll-mobile">
               <v-stepper-step
                 :id="'step1'"
                 :complete="e1 > 1"
@@ -70,113 +64,125 @@
                 >
                 {{truncateString(type)}}
               </v-stepper-step>
-            </v-stepper-header>
+            </div>
+          </v-stepper-header>
 
-            <v-stepper-items style="">
-              <v-stepper-content step="1" style="padding: 0 !important;">
-                <v-container>
-                  <v-row v-if="!$vuetify.breakpoint.mobile" justify="space-between">
+          <v-stepper-items style="">
+            <v-stepper-content step="1" style="padding: 0 !important;">
+              <v-container>
+                <v-row v-if="!$vuetify.breakpoint.mobile" justify="space-between">
+                  <button
+                    
+                    @click="e1 = 2; vehicle = 'Cars'"
+                    @mouseenter="carImg = carImg + '_hover'"
+                    @mouseleave="carImg = 'cars'"
+                    class="custom-btn"
+                  >
+                    <img :src="require(`@/assets/standard/${carImg}.svg`)" alt="">
+                  </button>
+
+                  <button
+                    @click="e1 = 2; vehicle = 'Light Vehicles'"
+                    @mouseenter="lwkImg = lwkImg + '_hover'"
+                    @mouseleave="lwkImg = 'lwk'"
+                    class="custom-btn"
+                  >
+                    <img :src="require(`@/assets/standard/${lwkImg}.svg`)" alt="">
+                  </button>
+                  <button
+                    @click="e1 = 2; vehicle = 'Trucks & Bus'"
+                    @mouseenter="truckImg = truckImg + '_hover'"
+                    @mouseleave="truckImg = 'trucks'"
+                    class="custom-btn"
+                  >
+                    <img :src="require(`@/assets/standard/${truckImg}.svg`)" alt="">
+                  </button>
+                  <button
+                    @click="e1 = 2; vehicle = 'Motorcycles'"
+                    @mouseenter="motoImg = motoImg + '_hover'"
+                    @mouseleave="motoImg = 'motos'"
+                    class="custom-btn"
+                  >
+                    <img :src="require(`@/assets/standard/${motoImg}.svg`)" alt="">
+                  </button>
+                  
+                </v-row>
+                <v-row v-else id="row-mobile-vehicles">
+                  <v-col cols=6>
                     <button
-                      
                       @click="e1 = 2; vehicle = 'Cars'"
-                      @mouseenter="carImg = carImg + '_hover'"
-                      @mouseleave="carImg = 'cars'"
                       class="custom-btn"
                     >
-                      <img :src="require(`@/assets/standard/${carImg}.svg`)" alt="">
+                      <img :src="require(`@/assets/mobile/car.svg`)" alt="">
                     </button>
-
+                  </v-col>
+                  <v-col cols=6>
                     <button
                       @click="e1 = 2; vehicle = 'Light Vehicles'"
-                      @mouseenter="lwkImg = lwkImg + '_hover'"
-                      @mouseleave="lwkImg = 'lwk'"
                       class="custom-btn"
                     >
-                      <img :src="require(`@/assets/standard/${lwkImg}.svg`)" alt="">
+                      <img :src="require(`@/assets/mobile/lwk.svg`)" alt="">
                     </button>
+                  </v-col>
+                  <v-col cols=6>
                     <button
                       @click="e1 = 2; vehicle = 'Trucks & Bus'"
-                      @mouseenter="truckImg = truckImg + '_hover'"
-                      @mouseleave="truckImg = 'trucks'"
                       class="custom-btn"
                     >
-                      <img :src="require(`@/assets/standard/${truckImg}.svg`)" alt="">
+                      <img :src="require(`@/assets/mobile/truck.svg`)" alt="">
                     </button>
+                  </v-col>
+                  <v-col cols=6 style="margin: auto">
                     <button
                       @click="e1 = 2; vehicle = 'Motorcycles'"
-                      @mouseenter="motoImg = motoImg + '_hover'"
-                      @mouseleave="motoImg = 'motos'"
                       class="custom-btn"
                     >
-                      <img :src="require(`@/assets/standard/${motoImg}.svg`)" alt="">
+                      <img :src="require(`@/assets/mobile/moto.svg`)" alt="">
                     </button>
-                    
-                  </v-row>
-                  <v-row v-else id="row-mobile-vehicles">
-                    <v-col cols=6>
-                      <button
-                        @click="e1 = 2; vehicle = 'Cars'"
-                        class="custom-btn"
-                      >
-                        <img :src="require(`@/assets/mobile/car.svg`)" alt="">
-                      </button>
-                    </v-col>
-                    <v-col cols=6>
-                      <button
-                        @click="e1 = 2; vehicle = 'Light Vehicles'"
-                        class="custom-btn"
-                      >
-                        <img :src="require(`@/assets/mobile/lwk.svg`)" alt="">
-                      </button>
-                    </v-col>
-                    <v-col cols=6>
-                      <button
-                        @click="e1 = 2; vehicle = 'Trucks & Bus'"
-                        class="custom-btn"
-                      >
-                        <img :src="require(`@/assets/mobile/truck.svg`)" alt="">
-                      </button>
-                    </v-col>
-                    <v-col cols=6 style="margin: auto">
-                      <button
-                        @click="e1 = 2; vehicle = 'Motorcycles'"
-                        class="custom-btn"
-                      >
-                        <img :src="require(`@/assets/mobile/moto.svg`)" alt="">
-                      </button>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-stepper-content>
+                  </v-col>
+                </v-row>
+                <!-- VISIT BIZOL -->
+                <v-row>
+                  <v-col cols=1 md=4></v-col>
+                  <v-col cols=10 md=4>
+                    <v-btn block color="success" class="mt-3" >VISIT BIZOL</v-btn>
+                  </v-col>
+                  <v-col cols=1 md=4></v-col>
+                </v-row>
+                
+              </v-container>
+            </v-stepper-content>
 
-              <v-stepper-content step="2" >
-                <Favorites v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
-                <List v-on:setbrand="setbrand"/>
-                <Favorites v-bind:class="{'d-block' : !$vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
-                <v-btn v-if="$vuetify.breakpoint.mobile" v-bind:class="{'d-block' : showTopButton}" class="top-btn d-none" @click="scrollTop()">top</v-btn>
-              </v-stepper-content>
+            <v-stepper-content step="2" >
+              <Favorites v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
+              <List v-on:setbrand="setbrand"/>
+              <Favorites v-bind:class="{'d-block' : !$vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
+              <v-btn v-if="$vuetify.breakpoint.mobile" v-bind:class="{'d-block' : showTopButton}" class="top-btn d-none" @click="scrollTop()">top</v-btn>
+            </v-stepper-content>
 
-              <v-stepper-content step="3" >
-                  <ListModel v-bind:brand="brand" v-on:setmodel="setmodel"/>
-              </v-stepper-content>
+            <v-stepper-content step="3" >
+                <ListModel v-bind:brand="brand" v-on:setmodel="setmodel"/>
+            </v-stepper-content>
 
-              <v-stepper-content step="4" >
-                  <ListType v-bind:model="model" v-on:settype="settype"  />
-              </v-stepper-content>
+            <v-stepper-content step="4" >
+                <ListType v-bind:model="model" v-on:settype="settype"  />
+            </v-stepper-content>
 
-              <v-stepper-content step="5" >
-                  <div style="min-height: 480px">
-                    <h1 class="text-center">BIZOL Recommendations</h1>
-                    <h2 class="text-center">Choose a category and find your BIZOL solution</h2>
-                    <ExpansionPanel />
-                    <ExpansionPanel />
-                    <ExpansionPanel />
-                    <ExpansionPanel />
-                  </div>
-              </v-stepper-content>
-            </v-stepper-items>
-          </v-stepper>
-      </v-container>
+            <v-stepper-content step="5" >
+                <div style="min-height: 480px">
+                  <h1 class="text-center">BIZOL Recommendations</h1>
+                  <h2 class="text-center">Choose a category and find your BIZOL solution</h2>
+                  <ExpansionPanel />
+                  <ExpansionPanel />
+                  <ExpansionPanel />
+                  <ExpansionPanel />
+                </div>
+            </v-stepper-content>
+          </v-stepper-items>
+          
+        </v-stepper>
+        
+    </v-container>
   </v-app>
 </template>
 
@@ -188,6 +194,7 @@ import ListModel from "./views/ListModel.vue";
 import ListType from "./views/ListType.vue";
 import ExpansionPanel from "./views/ExpansionPanel.vue";
 import Favorites from "./views/Favorites.vue";
+import MainSearch from "./views/MainSearch.vue";
 import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo);
 export default Vue.extend({
@@ -198,11 +205,12 @@ export default Vue.extend({
     ListType,
     ExpansionPanel,
     Favorites,
+    MainSearch,
   },
   watch: {
     e1: function (val) {
       const options = {
-        container: '#stepper_header',
+        container: '.horizontal-scroll-mobile',
         easing: 'ease-out',
         lazy: false,
         offset: val == 1 ? 0 : ((window.innerWidth / 2) - 115) * -1,
@@ -321,6 +329,15 @@ export default Vue.extend({
   background-position: center;
   background-size: cover;
 }
+.banner-mobile {
+  position: fixed;
+  z-index: 1;
+  background-image: url("../src/assets/header-mobile.jpg");
+  height: 85px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  background-size: cover;
+}
 .smallBanner {
   transition: all 0.5s;
   height: 235px;
@@ -349,6 +366,9 @@ export default Vue.extend({
   }
 }
 #row-mobile-vehicles {
+  .col {
+    padding: 0px 6px !important;
+  }
   .custom-btn {
     width: 100%;
 
@@ -383,7 +403,7 @@ export default Vue.extend({
 
   .input-search {
     outline: none;
-    width: 100% !important;
+    width: 100% ;
     border: 1px solid gray;
     border-radius: 6px !important;
     height: 36px;
@@ -417,14 +437,22 @@ export default Vue.extend({
   margin: 0 !important;
 }
 .v-stepper--vertical {
+  padding-bottom: 0 !important;
   .v-stepper__header {
-        height: 72px;
-        /* align-items: stretch; */
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        white-space: nowrap;
-        justify-content: space-between;
+      background-color: white;
+      position: fixed;
+      z-index: 1;
+      top: 85px;
+      height: 72px;
+      /* align-items: stretch; */
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      white-space: nowrap;
+      justify-content: space-between;
+  }
+  .v-stepper__items {
+    margin-top: 168.54px;
   }
 }
 
@@ -499,7 +527,7 @@ export default Vue.extend({
 .max-width {
   max-width: 1185px !important;
 }
-.v-stepper__header, .v-stepper {
+.v-stepper {
   box-shadow: none !important;
 }
 .v-stepper__label {
@@ -605,9 +633,16 @@ export default Vue.extend({
     z-index: 1;
   }
 }
-
+.horizontal-scroll-mobile {
+    display: flex;
+    overflow: scroll !important;
+    white-space: nowrap;
+    justify-content: space-between;
+    width: 100vw;
+}
 .v-stepper__header {  
   height: 83.54px !important;
+  box-shadow: 0pt 3pt 3pt 3pt white !important;
 }
 .v-stepper--vertical {
   .v-stepper__header{
