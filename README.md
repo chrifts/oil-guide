@@ -1,5 +1,12 @@
 # oil-2
+ATTENTION:
+The only full steps available is:
+    Vechicle: Any
+    Brand: Nissan (EU)
+    Model: Navara, D40 (2005 - 2015)
+    Type: Any
 
+Test it on Mobile and Desktop!
 ## Project setup
 ```
 npm install

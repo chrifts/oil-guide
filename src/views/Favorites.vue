@@ -6,7 +6,7 @@
             </h2>
             <v-row justify="space-between" v-bind:class="{'scroll-fav' : $vuetify.breakpoint.mobile}">
             <button
-                @click="brand = 'Ford'"
+                @click="setBrand('Ford')"
                 @mouseenter="favs.fav0 = 'hover/0'"
                 @mouseleave="favs.fav0 = 'standard/0'"
                 class="custom-btn"
@@ -15,7 +15,7 @@
             </button>
 
             <button
-                @click="brand = 'Nissan (EU)'"
+                @click="setBrand('Nissan (EU)')"
                 @mouseenter="favs.fav1 = 'hover/1'"
                 @mouseleave="favs.fav1 = 'standard/1'"
                 class="custom-btn"
@@ -23,7 +23,7 @@
                 <img :src="require(`@/assets/favorites/${favs.fav1}.svg`)" alt="">
             </button>
             <button
-                @click="brand = 'Opel'"
+                @click="setBrand('Opel')"
                 @mouseenter="favs.fav2 = 'hover/2'"
                 @mouseleave="favs.fav2 = 'standard/2'"
                 class="custom-btn"
@@ -31,7 +31,7 @@
                 <img :src="require(`@/assets/favorites/${favs.fav2}.svg`)" alt="">
             </button>
             <button
-                @click="brand = 'Renault'"
+                @click="setBrand('Renault')"
                 @mouseenter="favs.fav3 = 'hover/3'"
                 @mouseleave="favs.fav3 = 'standard/3'"
                 class="custom-btn"
@@ -39,7 +39,7 @@
                 <img :src="require(`@/assets/favorites/${favs.fav3}.svg`)" alt="">
             </button>
             <button
-                @click="brand = 'Skoda'"
+                @click="setBrand('Skoda')"
                 @mouseenter="favs.fav4 = 'hover/4'"
                 @mouseleave="favs.fav4 = 'standard/4'"
                 class="custom-btn"
@@ -58,11 +58,6 @@ export default Vue.extend({
             this.$data.brand = item;
             this.$emit('setbrand', this.$data.brand)
         },
-    },
-    watch: {
-        brand: function(val) {
-            this.setBrand(val)
-        }
     },
     data: ()=>({
         brand:'',
