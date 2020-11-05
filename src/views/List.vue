@@ -223,15 +223,15 @@ export default Vue.extend({
             "ALL": [],
             "A": ['Audi', 'Abrath'],
             "B": ['Bmw'],
-            "C": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "D": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "E": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "F": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "G": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "H": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "I": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "J": ['Brand 1', 'Brand 2', 'Brand 3'],
-            "K": ['Brand 1', 'Brand 2', 'Brand 3'],
+            "C": ['Chrysler', 'Chevrolet'],
+            "D": ['Daihatsu', 'D Brand 2', 'D Brand 3'],
+            "E": ['E Brand 1', 'E Brand 2', 'E Brand 3'],
+            "F": ['Ford', 'Fiat'],
+            "G": ['GMC', 'G Brand 2'],
+            "H": ['Honda', 'Hiunday', 'H Brand 3'],
+            "I": ['I Brand 1', ' I Brand 2', 'I Brand 3'],
+            "J": ['Jeep', 'J Brand 2', 'J Brand 3'],
+            "K": ['K Brand 1', 'K Brand 2', 'K Brand 3'],
             "L": ['Brand 1', 'Brand 2', 'Brand 3'],
             "M": ['Brand 1', 'Brand 2', 'Brand 3'],
             "N": ['Nissan (DongFeng) (CHN)', 'Nissan (EU)', 'Nissan (RUS)', 'Nissan (USA/CAN)', 'Nobel'],
@@ -253,6 +253,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+$mainGreen: #0c9d30;
 @media (max-width: 768px) {
     .dropdown {
         width: 100%;
@@ -276,8 +277,8 @@ export default Vue.extend({
         padding:4px 7px;
     }
     &:hover {
-        background-color: green;
-        border: 1px solid green;
+        background-color: $mainGreen;
+        border: 1px solid $mainGreen;
         border-radius: 10px 10px 0 0;
         color: white;
     }
@@ -285,8 +286,8 @@ export default Vue.extend({
     display: inline-block;
 }
 .hovered {
-    background-color: green;
-    border: 1px solid green;
+    background-color: $mainGreen;
+    border: 1px solid $mainGreen;
     border-radius: 10px 10px 0 0;
     color: white;
 }
@@ -316,7 +317,7 @@ export default Vue.extend({
     width: 100%;
     background-color: #f9f9f9;
     min-width: 160px;
-    border: 1px solid green;
+    border: 1px solid $mainGreen;
     border-radius: 0px 0px 10px 10px;
     padding: 12px 16px;
     z-index: 1;
@@ -328,8 +329,8 @@ export default Vue.extend({
 
 .dropdown-content:hover ~ .dropdown  {
     span {
-        background-color: green;
-        border: 1px solid green;
+        background-color: $mainGreen;
+        border: 1px solid $mainGreen;
         border-radius: 10px;
         color: white; 
     }

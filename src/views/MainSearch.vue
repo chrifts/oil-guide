@@ -1,17 +1,23 @@
 <template>
     <v-container>
-        <v-row v-bind:class="{'hide-footer': (step > 1 && !mobile)}" >
-            
-            <v-col :cols="activeMobileInput ? 12 : 10" class="my-auto d-none-c" id="div-search" :class="{'d-block-c' : (activeMobileInput || !mobile)}">
+        <v-row v-bind:class="{'hide-footer': (step > 1 && !mobile)}" > 
+            <v-col :cols="activeMobileInput && mobile ? 12 : 10" class="my-auto d-none-c" id="div-search" :class="{'d-block-c' : (activeMobileInput || !mobile)}">
                 <div class="d-flex">
                     <v-btn
                         tile
                         color="white"
+                        :class="mobile ? 'd-block' : 'd-none'"
+                        @click="search()"
                     >
                         <v-icon>mdi-magnify</v-icon>
                     </v-btn>
-                    <input type="text" name="" :id="mobile ? 'main-search-mobile' : 'main-search'" :placeholder="mobile ? ' General search (3 letters min)' : ' Search by name (enter al lest 3 letters)'" class="input-search">
-                    <v-btn tile @click="activeMobileInput = !activeMobileInput" color="white">
+                        <input type="text" name="" :id="mobile ? 'main-search-mobile' : 'main-search'" :placeholder="mobile ? ' General search (3 letters min)' : ' Search by name (enter al lest 3 letters)'" class="input-search">
+                    <v-btn 
+                        tile 
+                        @click="activeMobileInput = !activeMobileInput" 
+                        color="white"
+                        :class="mobile ? 'd-block' : 'd-none'"
+                    >
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </div>
@@ -21,7 +27,7 @@
                     :color="mobile ? 'white' : 'success'"
                     width="100%"
                     :icon="mobile"
-                    @click="activeMobileInput = !activeMobileInput"
+                    @click="mobile ? activeMobileInput = !activeMobileInput : search()"
                 >
                     <v-icon>mdi-magnify</v-icon>
                 </v-btn>
@@ -39,13 +45,18 @@ export default Vue.extend({
     data: ()=>({
         activeMobileInput: false,
     }),
+    methods: {
+        search() {
+            console.log('search')
+        }
+    }
 })
 </script>
 <style lang="scss">
  
 @keyframes fadeOut {
-    0% { opacity: 1; width: 100%;}
-    50% { opacity: 0.5; width: 50%;}
+    0% { opacity: 1; }
+    50% { opacity: 0.5;}
     100% { opacity: 0; transform: translateX(-15px);}
 }
 .d-none-c{
@@ -56,9 +67,9 @@ export default Vue.extend({
 }
 
 @keyframes fadeIn {
-    0% { opacity: 0; width: 0; transform: translateX(-15px)}
-    50% { opacity: 0.5; width: 10%;}
-    100% { opacity: 1; width: 100%; transform: translateX(0px)}
+    0% { opacity: 0; transform: translateX(-15px)}
+    50% { opacity: 0.5; }
+    100% { opacity: 1; transform: translateX(0px)}
 }
 
 .d-block-c{
@@ -66,6 +77,9 @@ export default Vue.extend({
     -webkit-animation: fadeIn 0.5s;
     animation: fadeIn 0.5s;
     animation-fill-mode: forwards;
+    .v-btn--contained {
+        box-shadow: none !important;
+    }
 }
 
 #div-search {

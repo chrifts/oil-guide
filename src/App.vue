@@ -2,11 +2,11 @@
   <v-app>
     <div class="banner d-none" v-bind:class="{'smallBanner': (e1 > 1), 'd-block' : !$vuetify.breakpoint.mobile}"></div>
     <div class="banner-mobile d-none" v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}">
-      <MainSearch v-bind:step="e1" v-bind:mobile="true"/>
+      <MainSearch v-bind:step="parseInt(e1)" v-bind:mobile="true"/>
     </div>
     <v-container class="max-width" style="padding: 0;">
         <!-- MAIN SEARCH -->
-        <MainSearch v-if="!$vuetify.breakpoint.mobile" v-bind:step="e1" v-bind:mobile="false"/>
+        <MainSearch v-if="!$vuetify.breakpoint.mobile" v-bind:step="parseInt(e1)" v-bind:mobile="false"/>
         <!-- BACK BUTTON -->
         <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'show': (e1 > 1)}" class="hide-footer">
           <v-col cols=12>
@@ -16,7 +16,7 @@
         <!-- STEPPER -->
         <v-stepper v-model="e1" :vertical="$vuetify.breakpoint.mobile">
           <v-stepper-header id="stepper_header">
-            <div class="horizontal-scroll-mobile">
+            <div :class="$vuetify.breakpoint.mobile ? 'horizontal-scroll-mobile' : 'horizontal-scroll' ">
               <v-stepper-step
                 :id="'step1'"
                 :complete="e1 > 1"
@@ -141,42 +141,51 @@
                     </button>
                   </v-col>
                 </v-row>
-                <!-- VISIT BIZOL -->
-                <v-row>
-                  <v-col cols=1 md=4></v-col>
-                  <v-col cols=10 md=4>
-                    <v-btn block color="success" class="mt-3" >VISIT BIZOL</v-btn>
-                  </v-col>
-                  <v-col cols=1 md=4></v-col>
-                </v-row>
-                
               </v-container>
+              <VisitBizol />
             </v-stepper-content>
 
             <v-stepper-content step="2" >
               <Favorites v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
               <List v-on:setbrand="setbrand"/>
               <Favorites v-bind:class="{'d-block' : !$vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
-              <v-btn v-if="$vuetify.breakpoint.mobile" v-bind:class="{'d-block' : showTopButton}" class="top-btn d-none" @click="scrollTop()">top</v-btn>
+              <v-btn v-if="$vuetify.breakpoint.mobile && e1 != 5" v-bind:class="{'d-block' : showTopButton}" class="top-btn d-none" @click="scrollTop()">top</v-btn>
+              
             </v-stepper-content>
 
             <v-stepper-content step="3" >
                 <ListModel v-bind:brand="brand" v-on:setmodel="setmodel"/>
+                <VisitBizol />
             </v-stepper-content>
 
             <v-stepper-content step="4" >
                 <ListType v-bind:model="model" v-on:settype="settype"  />
+                <VisitBizol />
             </v-stepper-content>
 
             <v-stepper-content step="5" >
                 <div style="min-height: 480px">
                   <h1 class="text-center">BIZOL Recommendations</h1>
                   <h2 class="text-center">Choose a category and find your BIZOL solution</h2>
-                  <ExpansionPanel />
-                  <ExpansionPanel />
+                  <ExpansionPanel :isScroll="true" />
+                  <ExpansionPanel :isScroll="true" />
                   <ExpansionPanel />
                   <ExpansionPanel />
                 </div>
+                <v-container class="pb-0">
+                  <v-row>
+                    <v-col md=4 cols=1></v-col>
+                    <v-col md=4 cols=10>
+                      <v-btn block color="success"
+                      @click="resetTitle(1); e1 = 1;"
+                      >
+                        Search again
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                
+                <VisitBizol class="pt-0" />
             </v-stepper-content>
           </v-stepper-items>
           
@@ -195,6 +204,7 @@ import ListType from "./views/ListType.vue";
 import ExpansionPanel from "./views/ExpansionPanel.vue";
 import Favorites from "./views/Favorites.vue";
 import MainSearch from "./views/MainSearch.vue";
+import VisitBizol from "./views/VisitBizol.vue";
 import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo);
 export default Vue.extend({
@@ -206,6 +216,7 @@ export default Vue.extend({
     ExpansionPanel,
     Favorites,
     MainSearch,
+    VisitBizol
   },
   watch: {
     e1: function (val) {
@@ -307,9 +318,10 @@ export default Vue.extend({
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+$mainGreen: #0c9d30;
 .top-btn {
     position: fixed !important;
-    bottom: 10px;
+    bottom: 65px;
     z-index: 1;
     right: 10px;
 }
@@ -331,7 +343,7 @@ export default Vue.extend({
 }
 .banner-mobile {
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   background-image: url("../src/assets/header-mobile.jpg");
   height: 85px;
   background-repeat: no-repeat;
@@ -441,7 +453,7 @@ export default Vue.extend({
   .v-stepper__header {
       background-color: white;
       position: fixed;
-      z-index: 1;
+      z-index: 2;
       top: 85px;
       height: 72px;
       /* align-items: stretch; */
@@ -586,7 +598,7 @@ export default Vue.extend({
       top: 15px;
       height: 50px;
       width: 125px;
-      background-color: green !important;
+      background-color: $mainGreen !important;
       transform: skewX(-20deg);
     }
     &::after {
@@ -597,7 +609,7 @@ export default Vue.extend({
       top: 15px;
       height: 50px;
       width: 115px;
-      background-color: green !important;
+      background-color: $mainGreen !important;
       transform: skewX(-20deg);
     }
     padding: 10px;
@@ -640,6 +652,15 @@ export default Vue.extend({
     justify-content: space-between;
     width: 100vw;
 }
+.horizontal-scroll {
+    overflow-x: hidden;
+    overflow-y: none;
+    align-items: stretch;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
 .v-stepper__header {  
   height: 83.54px !important;
   box-shadow: 0pt 3pt 3pt 3pt white !important;
@@ -659,9 +680,10 @@ export default Vue.extend({
     height: 480px;
     width: 100%;
     padding: 10px;
-    border: 1px solid green;
+    border: 1px solid $mainGreen;
     border-radius: 10px;
     overflow-y: scroll ;
+    overflow-x: hidden;
     ul {
         -webkit-column-count: 5;
         -moz-column-count: 5;
