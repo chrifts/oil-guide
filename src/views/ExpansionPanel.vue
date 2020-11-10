@@ -119,21 +119,26 @@ $mainGreen: #0c9d30;
 
 .scrollableDiv::-webkit-scrollbar-track
 {
-border-radius: 10px;
-background-color: #F5F5F5;
+    height: 8px;
+    border-radius: 10px;
+    background-color: #F5F5F5;
 }
 
 .scrollableDiv::-webkit-scrollbar
 {
     height: 8px;
     background-color: #F5F5F5;
+    &:hover {
+        height: 8px;
+    }
 }
 
 .scrollableDiv::-webkit-scrollbar-thumb
 {
-border-radius: 6px;
--webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-background-color: $mainGreen;
+    height: 8px;
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: $mainGreen;
 }
 
 .border-0 {
