@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container :class="{'cont-mob-list' : !$vuetify.breakpoint.mobile}">
         <v-row >
             <!-- <v-icon
                 large
@@ -16,18 +16,7 @@
             <v-col cols=12>
                 <!-- DESKTOP ROW FILTERED -->
                 <v-row v-if="filterBrands != null">
-                    
                     <div class="dropdown-content">
-                        <!-- <ul>
-                            <li v-for="(item, index2) in filterBrands['filter']"
-                                v-bind:item="item"
-                                v-bind:index="index2"
-                                v-bind:key="index2"
-                                @click="setBrand(item)"
-                            >
-                                {{item}}
-                            </li>
-                        </ul> -->
                         <v-row>
                             <v-list-item
                                 class="col-md-3"
@@ -37,6 +26,9 @@
                                 v-bind:key="index2"
                                 @click="setBrand(item)"
                             >
+                                <v-list-item-avatar>
+                                    <v-img src="@/assets/noimg.png"></v-img>
+                                </v-list-item-avatar>
                                 <v-list-item-content>
                                     <v-list-item-title>{{item}}</v-list-item-title>
                                 </v-list-item-content>
@@ -79,7 +71,11 @@
                                 v-bind:key="index"
                                 @click="setBrand(item)"
                             >
-                                <v-list-item-content>
+                                    <v-list-item-avatar>
+                                        <v-img src="@/assets/noimg.png"></v-img>
+                                    </v-list-item-avatar>
+
+                                    <v-list-item-content>
                                     <v-list-item-title>{{item}}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
@@ -95,7 +91,7 @@
             <v-col cols=12>
                 <!-- ROW ALL LETTERS -->
                 
-                <v-row v-if="filterBrands == null">
+                <v-row v-if="filterBrands == null" id="list-brands">
                     
                     <div 
                         v-for="(arrBrand, letter) in brands"
@@ -108,20 +104,20 @@
                         <span >{{letter}}</span>
                         <v-list three-line>
                             <template v-for="(theBrand, index2) in brands[letter]">
-                                <v-divider :key="index2"></v-divider>
+                                <v-divider :key="index2" ></v-divider>
                                 <v-list-item
                                 @click="setBrand(theBrand)"
                                 :key="theBrand + index2 + Math.random().toString()"
                                 >
-                                <!-- Checquear: NO pueden haber duplicados de theBrand -->
-                                <v-list-item-avatar>
-                                    <v-img :src="'https://upload.wikimedia.org/wikipedia/de/thumb/1/15/Nissan_Logo.svg/1200px-Nissan_Logo.svg.png'"></v-img>
-                                </v-list-item-avatar>
+                                    <!-- Checquear: NO pueden haber duplicados de theBrand -->
+                                    <v-list-item-avatar>
+                                        <v-img src="@/assets/noimg.png"></v-img>
+                                    </v-list-item-avatar>
 
-                                <v-list-item-content>
-                                    <v-list-item-title v-html="theBrand"></v-list-item-title>
-                                    
-                                </v-list-item-content>
+                                    <v-list-item-content>
+                                        <v-list-item-title v-html="theBrand"></v-list-item-title>
+                                        
+                                    </v-list-item-content>
                                 </v-list-item>
                             </template>
                         </v-list>  
@@ -142,7 +138,7 @@
                                 :key="item + index2 + Math.random().toString()"
                                 >
                                 <v-list-item-avatar>
-                                    <v-img :src="'https://upload.wikimedia.org/wikipedia/de/thumb/1/15/Nissan_Logo.svg/1200px-Nissan_Logo.svg.png'"></v-img>
+                                    <v-img src="@/assets/noimg.png"></v-img>
                                 </v-list-item-avatar>
 
                                 <v-list-item-content>
@@ -207,6 +203,7 @@ export default Vue.extend({
         }
     },
     mounted() {
+        console.log();
         this.fillAllBrand();
         if(this.$vuetify.breakpoint.mobile) {
             delete this.$data.brands.ALL;
@@ -216,6 +213,7 @@ export default Vue.extend({
         }
     },
     data: () => ({
+        noimgsrc: '/assets/noimg.png',
         letter: 'ALL',
         brand: "",
         filterBrands: null,
@@ -291,8 +289,9 @@ $mainGreen: #0c9d30;
     border-radius: 10px 10px 0 0;
     color: white;
 }
+
 .dropdown-content {
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     ul {
         -webkit-column-count: 5;
@@ -315,9 +314,10 @@ $mainGreen: #0c9d30;
     height: 250px;
     position: relative;
     width: 100%;
-    background-color: #f9f9f9;
+    // background-color: #fafafa85;
     min-width: 160px;
-    border: 1px solid $mainGreen;
+    // box-shadow: 7pt 6pt 8pt -10pt black;
+    border: 1px solid #e0e0e0;
     border-radius: 0px 0px 10px 10px;
     padding: 12px 16px;
     z-index: 1;
@@ -325,6 +325,25 @@ $mainGreen: #0c9d30;
 
 .dropdown-content:hover  {
     display: block;
+}
+
+.dropdown-content::-webkit-scrollbar-track
+{
+border-radius: 10px;
+background-color: #F5F5F5;
+}
+
+.dropdown-content::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb
+{
+border-radius: 6px;
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+background-color: $mainGreen;
 }
 
 .dropdown-content:hover ~ .dropdown  {
@@ -335,8 +354,24 @@ $mainGreen: #0c9d30;
         color: white; 
     }
 }
-
 .dropdown:hover ~ .dropdown-content {
   display: block;
+}
+$boder-list-color: rgba(0, 0, 0, 0.12);
+.dropdown {
+    .v-list {
+        padding-bottom: 0 !important;
+        .v-list-item {
+            border-left: 1px solid $boder-list-color;
+            border-right: 1px solid $boder-list-color;
+        }
+        &:last-child {
+            border-bottom: 1px solid $boder-list-color
+
+        }
+    }
+}
+.cont-mob-list {
+    padding: 0 20px !important;
 }
 </style>

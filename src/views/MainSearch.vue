@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-        <v-row v-bind:class="{'hide-footer': (step > 1 && !mobile)}" > 
+    <v-container v-bind:class="{'hide-footer': (step > 1 && !mobile), 'px-0 py-0' : !mobile}" >
+        <v-row  > 
             <v-col :cols="activeMobileInput && mobile ? 12 : 10" class="my-auto d-none-c" id="div-search" :class="{'d-block-c' : (activeMobileInput || !mobile)}">
                 <div class="d-flex">
                     <v-btn
@@ -11,7 +11,7 @@
                     >
                         <v-icon>mdi-magnify</v-icon>
                     </v-btn>
-                        <input type="text" name="" :id="mobile ? 'main-search-mobile' : 'main-search'" :placeholder="mobile ? ' General search (3 letters min)' : ' Search by name (enter al lest 3 letters)'" class="input-search">
+                        <input type="text" name="" :id="mobile ? 'main-search-mobile' : 'main-search'" :placeholder="mobile ? '  Search (min. 3 letters)' : ' Search by name (enter al lest 3 letters)'" class="input-search">
                     <v-btn 
                         tile 
                         @click="activeMobileInput = !activeMobileInput" 

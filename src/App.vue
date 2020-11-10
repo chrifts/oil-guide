@@ -1,20 +1,20 @@
 <template>
   <v-app>
-    <div class="banner d-none" v-bind:class="{'smallBanner': (e1 > 1), 'd-block' : !$vuetify.breakpoint.mobile}"></div>
+    <div class="banner d-none" v-bind:class="{'smallBanner': (e1 > 1 && animateBanner), 'd-block' : !$vuetify.breakpoint.mobile}"></div>
     <div class="banner-mobile d-none" v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}">
       <MainSearch v-bind:step="parseInt(e1)" v-bind:mobile="true"/>
     </div>
-    <v-container class="max-width" style="padding: 0;">
+    <v-container class="max-width">
         <!-- MAIN SEARCH -->
         <MainSearch v-if="!$vuetify.breakpoint.mobile" v-bind:step="parseInt(e1)" v-bind:mobile="false"/>
         <!-- BACK BUTTON -->
-        <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'show': (e1 > 1)}" class="hide-footer">
+        <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'show': (e1 > 1)}" class="hide-footer" style="height: 60px;">
           <v-col cols=12>
-            <v-btn @click="e1--; resetTitle()" color="success">back</v-btn>
+            <v-btn @click="e1--; resetTitle()" color="success" style="height: 25px;">back</v-btn>
           </v-col>
         </v-row>
         <!-- STEPPER -->
-        <v-stepper v-model="e1" :vertical="$vuetify.breakpoint.mobile">
+        <v-stepper v-model="e1" :vertical="$vuetify.breakpoint.mobile" :class="{'no-transition' : !animateSteps}">
           <v-stepper-header id="stepper_header">
             <div :class="$vuetify.breakpoint.mobile ? 'horizontal-scroll-mobile' : 'horizontal-scroll' ">
               <v-stepper-step
@@ -67,45 +67,52 @@
             </div>
           </v-stepper-header>
 
-          <v-stepper-items style="">
+          <v-stepper-items id="main-buttons">
             <v-stepper-content step="1" style="padding: 0 !important;">
               <v-container>
                 <v-row v-if="!$vuetify.breakpoint.mobile" justify="space-between">
-                  <button
-                    
-                    @click="e1 = 2; vehicle = 'Cars'"
-                    @mouseenter="carImg = carImg + '_hover'"
-                    @mouseleave="carImg = 'cars'"
-                    class="custom-btn"
-                  >
-                    <img :src="require(`@/assets/standard/${carImg}.svg`)" alt="">
-                  </button>
-
-                  <button
-                    @click="e1 = 2; vehicle = 'Light Vehicles'"
-                    @mouseenter="lwkImg = lwkImg + '_hover'"
-                    @mouseleave="lwkImg = 'lwk'"
-                    class="custom-btn"
-                  >
-                    <img :src="require(`@/assets/standard/${lwkImg}.svg`)" alt="">
-                  </button>
-                  <button
-                    @click="e1 = 2; vehicle = 'Trucks & Bus'"
-                    @mouseenter="truckImg = truckImg + '_hover'"
-                    @mouseleave="truckImg = 'trucks'"
-                    class="custom-btn"
-                  >
-                    <img :src="require(`@/assets/standard/${truckImg}.svg`)" alt="">
-                  </button>
-                  <button
-                    @click="e1 = 2; vehicle = 'Motorcycles'"
-                    @mouseenter="motoImg = motoImg + '_hover'"
-                    @mouseleave="motoImg = 'motos'"
-                    class="custom-btn"
-                  >
-                    <img :src="require(`@/assets/standard/${motoImg}.svg`)" alt="">
-                  </button>
+                  <v-col cols=3>
+                    <button
+                      @click="e1 = 2; vehicle = 'Cars'"
+                      @mouseenter="carImg = carImg + '_hover'"
+                      @mouseleave="carImg = 'cars'"
+                      class="custom-btn"
+                    >
+                      <img :src="require(`@/assets/standard/${carImg}.svg`)" alt="">
+                    </button>
+                  </v-col>
                   
+                  <v-col cols=3>
+                    <button
+                      @click="e1 = 2; vehicle = 'Light Vehicles'"
+                      @mouseenter="lwkImg = lwkImg + '_hover'"
+                      @mouseleave="lwkImg = 'lwk'"
+                      class="custom-btn"
+                    >
+                      <img :src="require(`@/assets/standard/${lwkImg}.svg`)" alt="">
+                    </button>
+                  </v-col>
+
+                  <v-col cols=3>
+                    <button
+                      @click="e1 = 2; vehicle = 'Trucks & Bus'"
+                      @mouseenter="truckImg = truckImg + '_hover'"
+                      @mouseleave="truckImg = 'trucks'"
+                      class="custom-btn"
+                    >
+                      <img :src="require(`@/assets/standard/${truckImg}.svg`)" alt="">
+                    </button>
+                  </v-col>
+                  <v-col cols=3>
+                    <button
+                      @click="e1 = 2; vehicle = 'Motorcycles'"
+                      @mouseenter="motoImg = motoImg + '_hover'"
+                      @mouseleave="motoImg = 'motos'"
+                      class="custom-btn"
+                    >
+                      <img :src="require(`@/assets/standard/${motoImg}.svg`)" alt="">
+                    </button>
+                  </v-col>
                 </v-row>
                 <v-row v-else id="row-mobile-vehicles">
                   <v-col cols=6>
@@ -164,13 +171,27 @@
             </v-stepper-content>
 
             <v-stepper-content step="5" >
-                <div style="min-height: 480px">
+                <div>
                   <h1 class="text-center">BIZOL Recommendations</h1>
                   <h2 class="text-center">Choose a category and find your BIZOL solution</h2>
-                  <ExpansionPanel :isScroll="true" />
-                  <ExpansionPanel :isScroll="true" />
-                  <ExpansionPanel />
-                  <ExpansionPanel />
+                  <ExpansionPanel :info="{
+                      isScroll: true,
+                      buttons: {0:{ title: 'Go', url:'https://bizol.com'}}
+                    }" />
+                  <ExpansionPanel :info="{
+                    isScroll: false,
+                    buttons: {0:{title: 'Contact', url:'https://bizol.com'}}
+                  }"
+                   />
+                  <ExpansionPanel :info="{
+                    isScroll: false,
+                    buttons: {0:{title: 'SDS', url: 'https://test.com'}, 1:{title: 'PDS', url: 'https://test.com'}}
+                  }"
+                  />
+                  <ExpansionPanel :info="{
+                    isScroll: false,
+                    buttons: {0:{title: 'Go', url:'https://bizol.com'}}
+                  }"/>
                 </div>
                 <v-container class="pb-0">
                   <v-row>
@@ -220,11 +241,12 @@ export default Vue.extend({
   },
   watch: {
     e1: function (val) {
+      const offsetVar = 127;
       const options = {
         container: '.horizontal-scroll-mobile',
         easing: 'ease-out',
         lazy: false,
-        offset: val == 1 ? 0 : ((window.innerWidth / 2) - 115) * -1,
+        offset: val == 1 ? 0 : ((window.innerWidth / 2) - offsetVar) * -1,
         force: true,
         cancelable: true,
         x: true,
@@ -236,6 +258,8 @@ export default Vue.extend({
     }
   },
   data: () => ({
+    animateBanner: true,
+    animateSteps: false,
     showTopButton: false,
     e1: 1,
     carImg: 'cars',
@@ -247,7 +271,9 @@ export default Vue.extend({
     model: '3. Choose your Model',
     type: '4. Choose your Type',
   }),
+
   mounted() {
+    console.log(this.$vuetify)
     window.onscroll = () => {    
         if(window.scrollY > 364) {
             this.$data.showTopButton = true;
@@ -317,6 +343,14 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+.v-stepper__content {
+  padding: 0px 24px 16px 24px !important;
+}
+#main-buttons {
+  .col {
+    text-align: center;
+  }
+}
 @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 $mainGreen: #0c9d30;
 .top-btn {
@@ -326,22 +360,22 @@ $mainGreen: #0c9d30;
     right: 10px;
 }
 .custom-btn {
-  width: 250px;
-  height: 250px;
+  width: 80%;
   img{
-    width: 250px;
-    height: 250px;
+    width: 100%;
   }
 }
 .banner {
   transition: all 0.5s;
   background-image: url("../public/assets/header.jpg");
-  height: 470px;
+  height: 250px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-position-y: 60%;
 }
 .banner-mobile {
+  width: 100%;
   position: fixed;
   z-index: 2;
   background-image: url("../src/assets/header-mobile.jpg");
@@ -352,8 +386,8 @@ $mainGreen: #0c9d30;
 }
 .smallBanner {
   transition: all 0.5s;
-  height: 235px;
-  background-position-y: -150px;
+  height: 180px;
+  background-position-y: 60%;
 }
 .v-sheet.v-card:not(.v-sheet--outlined) {
   box-shadow: none !important;
@@ -399,13 +433,21 @@ $mainGreen: #0c9d30;
     display: none;
   }
 }
+
 .v-stepper__step .v-stepper__label {
-  padding: 0 !important;
+  // padding: 0 !important;
 }
 .v-application--is-ltr .v-stepper__label {
   text-align: center !important;
 }
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+  .v-stepper--vertical .v-stepper__step {
+    padding: 0px 24px 0px !important;
+    margin-right: 33px;
+  }
+  #stepper_header {
+    width: calc(100% - 24px) !important;
+  }
   .v-stepper__step .v-stepper__label {
     padding: 10px !important;
   }
@@ -442,6 +484,13 @@ $mainGreen: #0c9d30;
     }
   }
 }
+.v-list-item--link:before {
+  background-color: transparent !important;
+  border: 1px solid $mainGreen;
+}
+.theme--light.v-list-item:hover::before {
+  opacity: 1 !important;
+}
 .v-stepper--vertical .v-stepper__content {
   padding: 0 15px !important;
 }
@@ -464,7 +513,7 @@ $mainGreen: #0c9d30;
       justify-content: space-between;
   }
   .v-stepper__items {
-    margin-top: 168.54px;
+    margin-top: 140px;
   }
 }
 
@@ -508,15 +557,22 @@ $mainGreen: #0c9d30;
   }
   
 }
-.v-stepper--vertical .v-stepper__step {
-  padding: 17px 24px 16px !important;
-  margin-right: 33px;
+.v-stepper__step {
+  padding: 0px 24px 0px !important;
 }
+
 .v-list--three-line .v-list-item, .v-list-item--three-line {
   min-height: 72px !important;
 }
 .v-expansion-panel {
   background-color: black !important;
+  a {
+    min-width: 40px;
+    background-color: $mainGreen;
+    color: white !important;
+    padding: 10px;
+    margin-right: 5px;
+  }
   color: white !important;
   .ico-exp {
     flex: none !important;
@@ -596,7 +652,7 @@ $mainGreen: #0c9d30;
       content: "";
       right: 105px;
       top: 15px;
-      height: 50px;
+      height: 35px;
       width: 125px;
       background-color: $mainGreen !important;
       transform: skewX(-20deg);
@@ -607,7 +663,7 @@ $mainGreen: #0c9d30;
       content: "";
       right: 0px;
       top: 15px;
-      height: 50px;
+      height: 35px;
       width: 115px;
       background-color: $mainGreen !important;
       transform: skewX(-20deg);
@@ -625,7 +681,7 @@ $mainGreen: #0c9d30;
       content: "";
       right: 105px;
       top: 15px;
-      height: 50px;
+      height: 35px;
       width: 125px;
       background-color: gray;
       transform: skewX(-20deg);
@@ -636,7 +692,7 @@ $mainGreen: #0c9d30;
       content: "";
       right: 0px;
       top: 15px;
-      height: 50px;
+      height: 35px;
       width: 115px;
       background-color: gray;
       transform: skewX(-20deg);
@@ -646,6 +702,7 @@ $mainGreen: #0c9d30;
   }
 }
 .horizontal-scroll-mobile {
+    
     display: flex;
     overflow: scroll !important;
     white-space: nowrap;
@@ -662,7 +719,7 @@ $mainGreen: #0c9d30;
     width: 100%;
 }
 .v-stepper__header {  
-  height: 83.54px !important;
+  height: 65px !important;
   box-shadow: 0pt 3pt 3pt 3pt white !important;
 }
 .v-stepper--vertical {
@@ -677,12 +734,12 @@ $mainGreen: #0c9d30;
   }
 }
 .list-model {
-    height: 480px;
+    max-height: 400px;
     width: 100%;
-    padding: 10px;
-    border: 1px solid $mainGreen;
-    border-radius: 10px;
-    overflow-y: scroll ;
+    padding: 12px;
+    // border: 1px solid $mainGreen;
+    // border-radius: 10px;
+    overflow-y: auto ;
     overflow-x: hidden;
     ul {
         -webkit-column-count: 5;
@@ -701,4 +758,7 @@ $mainGreen: #0c9d30;
     }
 }
 
+.no-transition {
+  .v-stepper__content { transition: none !important; }
+}
 </style>
