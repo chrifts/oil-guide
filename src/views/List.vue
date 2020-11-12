@@ -252,11 +252,16 @@ export default Vue.extend({
 
 <style lang="scss">
 $mainGreen: #0c9d30;
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .dropdown {
         width: 100%;
         &:hover {
             background-color: unset !important;
+            border: none !important;
+            color: black !important;
+        }
+        &:focus {
+            
             border: none !important;
             color: black !important;
         }
@@ -372,6 +377,6 @@ $boder-list-color: rgba(0, 0, 0, 0.12);
     }
 }
 .cont-mob-list {
-    padding: 0 20px !important;
+    // padding: 0 20px !important;
 }
 </style>

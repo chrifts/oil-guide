@@ -2,7 +2,7 @@
   <v-app>
     <div class="banner d-none" v-bind:class="{'smallBanner': (e1 > 1 && animateBanner), 'd-block' : !$vuetify.breakpoint.mobile}"></div>
     <div class="banner-mobile d-none" v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}">
-      <MainSearch v-bind:step="parseInt(e1)" v-bind:mobile="true"/>
+      <MainSearch v-bind:step="parseInt(e1)" v-bind:mobile="true" style="position: relative; bottom: 15px;"/>
     </div>
     <v-container class="max-width">
         <!-- MAIN SEARCH -->
@@ -10,12 +10,23 @@
         <!-- BACK BUTTON -->
         <v-row v-if="!$vuetify.breakpoint.mobile" v-bind:class="{'show': (e1 > 1)}" class="hide-footer" style="height: 60px;">
           <v-col cols=12>
-            <v-btn @click="e1--; resetTitle()" color="success" style="height: 25px;">back</v-btn>
+            <v-btn 
+              @click="e1--; resetTitle()" 
+              style="height: 25px; width: 25px;"
+              class="bg-mainGreen"
+              icon outlined fab elevation="2"
+              >
+              <v-icon
+                color="white"
+              >
+                mdi-chevron-left
+              </v-icon>
+            </v-btn>
           </v-col>
         </v-row>
         <!-- STEPPER -->
         <v-stepper v-model="e1" :vertical="$vuetify.breakpoint.mobile" :class="{'no-transition' : !animateSteps}">
-          <v-stepper-header id="stepper_header">
+          <v-stepper-header id="stepper_header" >
             <div :class="$vuetify.breakpoint.mobile ? 'horizontal-scroll-mobile' : 'horizontal-scroll' ">
               <v-stepper-step
                 :id="'step1'"
@@ -149,64 +160,78 @@
                   </v-col>
                 </v-row>
               </v-container>
-              <VisitBizol />
+              <!-- <VisitBizol  v-if="$vuetify.breakpoint.mobile" /> -->
             </v-stepper-content>
 
             <v-stepper-content step="2" >
               <Favorites v-bind:class="{'d-block' : $vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
-              <List v-on:setbrand="setbrand"/>
+              <List v-on:setbrand="setbrand" class="mb-5"/>
               <Favorites v-bind:class="{'d-block' : !$vuetify.breakpoint.mobile}" class="d-none" v-on:setbrand="setbrand"/>
-              <v-btn v-if="$vuetify.breakpoint.mobile && e1 != 5" v-bind:class="{'d-block' : showTopButton}" class="top-btn d-none" @click="scrollTop()">top</v-btn>
-              
+              <v-btn 
+                v-if="$vuetify.breakpoint.mobile && e1 != 5" 
+                v-bind:class="{'d-block' : showTopButton}" 
+                class="top-btn d-none"
+                @click="scrollTop()"
+                fab elevation="2" outlined icon 
+                >
+                <v-icon>
+                  mdi-arrow-up
+                </v-icon>
+              </v-btn>
+              <!-- <VisitBizol  v-if="$vuetify.breakpoint.mobile" /> -->
             </v-stepper-content>
 
             <v-stepper-content step="3" >
-                <ListModel v-bind:brand="brand" v-on:setmodel="setmodel"/>
-                <VisitBizol />
+                <ListModel v-bind:brand="brand" v-on:setmodel="setmodel" class="mb-5"/>
+                <!-- <VisitBizol  v-if="$vuetify.breakpoint.mobile" /> -->
             </v-stepper-content>
 
             <v-stepper-content step="4" >
-                <ListType v-bind:model="model" v-on:settype="settype"  />
-                <VisitBizol />
+                <ListType v-bind:model="model" v-on:settype="settype"  class="mb-5"/>
+                <!-- <VisitBizol  v-if="$vuetify.breakpoint.mobile" /> -->
             </v-stepper-content>
 
             <v-stepper-content step="5" >
-                <div>
-                  <h1 class="text-center">BIZOL Recommendations</h1>
-                  <h2 class="text-center">Choose a category and find your BIZOL solution</h2>
+                <div :style="$vuetify.breakpoint.mobile ? 'margin-bottom: 100px;' : 'margin-bottom: 50px;'">
+                  <h1 class="text-center text-h6 mt-2 mb-4">BIZOL Recommendations</h1>
                   <ExpansionPanel :info="{
                       isScroll: true,
+                      title: 'Engine (SVQ20DE) - severe',
+                      icon: 'engine.png',
                       buttons: {0:{ title: 'Go', url:'https://bizol.com'}}
                     }" />
                   <ExpansionPanel :info="{
                     isScroll: false,
-                    buttons: {0:{title: 'Contact', url:'https://bizol.com'}}
-                  }"
-                   />
-                  <ExpansionPanel :info="{
-                    isScroll: false,
+                    title: 'Diferential, front-normal',
+                    icon: 'differential_front_normal.png',
                     buttons: {0:{title: 'SDS', url: 'https://test.com'}, 1:{title: 'PDS', url: 'https://test.com'}}
-                  }"
-                  />
+                    }"/>
                   <ExpansionPanel :info="{
                     isScroll: false,
-                    buttons: {0:{title: 'Go', url:'https://bizol.com'}}
-                  }"/>
+                    title: 'Cooling system - normal',
+                    icon: 'cooling_system.png',
+                    specialProduct: true,
+                    buttons: {0:{title: 'Contact', url:'https://bizol.com'}}
+                    }" />
+                  <ExpansionPanel :info="{
+                    isScroll: false,
+                    title: 'Transmission, automatic (5/1 - normal)',
+                    icon: 'transmission_automatic_normal.png',
+                    buttons: {0:{title: 'SDS', url: 'https://test.com'}, 1:{title: 'PDS', url: 'https://test.com'}}
+                    }"/>
                 </div>
-                <v-container class="pb-0">
-                  <v-row>
-                    <v-col md=4 cols=1></v-col>
-                    <v-col md=4 cols=10>
-                      <v-btn block color="success"
-                      @click="resetTitle(1); e1 = 1;"
-                      >
-                        Search again
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-container>
-                
-                <VisitBizol class="pt-0" />
+                <div :class="{'div-footer-step5' : $vuetify.breakpoint.mobile }">
+                  <v-btn
+                    v-if="e1 == 5"
+                    block 
+                    color="success" 
+                    :class="{'mt-5 search-again-desktop' : !$vuetify.breakpoint.mobile}"
+                    @click="resetTitle(1); e1 = 1;"
+                  >
+                    Search again
+                  </v-btn>
+                  <VisitBizol class="pt-0" v-if="$vuetify.breakpoint.mobile" />
+                </div>
             </v-stepper-content>
           </v-stepper-items>
           
@@ -258,7 +283,7 @@ export default Vue.extend({
     }
   },
   data: () => ({
-    animateBanner: true,
+    animateBanner: false,
     animateSteps: false,
     showTopButton: false,
     e1: 1,
@@ -284,7 +309,8 @@ export default Vue.extend({
   },
   methods: {
     truncateString(input: string) {
-      return input.length > 22 ? `${input.substring(0, 22)}...` : input;
+      
+      return input.length > 22 ? `${input.substring(0, 19)}...` : input;
     },
     scrollTop() {
       const options = {
@@ -344,7 +370,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .v-stepper__content {
-  padding: 0px 24px 16px 24px !important;
+  padding: 0px !important;
 }
 #main-buttons {
   .col {
@@ -355,14 +381,19 @@ export default Vue.extend({
 $mainGreen: #0c9d30;
 .top-btn {
     position: fixed !important;
-    bottom: 65px;
+    bottom: 75px;
+    background: white;
     z-index: 1;
     right: 10px;
 }
 .custom-btn {
-  width: 80%;
+  outline: none !important;
+  width: 90%;
+  height: 90%;
   img{
     width: 100%;
+    height: 100%;
+    min-height: 223px;
   }
 }
 .banner {
@@ -374,12 +405,15 @@ $mainGreen: #0c9d30;
   background-size: cover;
   background-position-y: 60%;
 }
+.v-stepper--vertical .v-stepper__header {
+  top: 55px !important;
+}
 .banner-mobile {
   width: 100%;
   position: fixed;
   z-index: 2;
   background-image: url("../src/assets/header-mobile.jpg");
-  height: 85px;
+  height: 55px;
   background-repeat: no-repeat;
   background-position: bottom left;
   background-size: cover;
@@ -416,13 +450,13 @@ $mainGreen: #0c9d30;
     padding: 0px 6px !important;
   }
   .custom-btn {
+    outline: none !important;
     width: 100%;
 
     height: auto;
     img {
       width: 100%;
-      
-      
+      min-height: unset !important;
       height: auto;
     }
   }
@@ -441,6 +475,20 @@ $mainGreen: #0c9d30;
   text-align: center !important;
 }
 @media (max-width: 600px) {
+  .v-list-item--link:before {
+    
+    border: none !important;
+    border-radius: 6px;
+  }
+  .favorites {
+    .custom-btn {
+      width: 100px !important;
+      height: 100px !important;
+      img {
+        min-height: unset !important;
+      }
+    }
+  }
   .v-stepper--vertical .v-stepper__step {
     padding: 0px 24px 0px !important;
     margin-right: 33px;
@@ -474,6 +522,7 @@ $mainGreen: #0c9d30;
     }
   }
   .list-model {
+    max-height: unset !important;
     min-height: 300px ;
     height: unset !important;
     overflow-x: hidden;
@@ -487,6 +536,7 @@ $mainGreen: #0c9d30;
 .v-list-item--link:before {
   background-color: transparent !important;
   border: 1px solid $mainGreen;
+  border-radius: 6px;
 }
 .theme--light.v-list-item:hover::before {
   opacity: 1 !important;
@@ -536,7 +586,7 @@ $mainGreen: #0c9d30;
   transition: all 0.5s;
 }
 .scroll-fav {
-  height: 90px;
+  height: 100px;
   display: block;
   flex-wrap: nowrap;
   overflow-x: scroll;
@@ -544,12 +594,28 @@ $mainGreen: #0c9d30;
   overflow-y: hidden;
   align-items: stretch;
 }
+  .horizontal-scroll-mobile::-webkit-scrollbar-track, .scroll-fav::-webkit-scrollbar-track
+  {
+      display: none;
+  }
+
+  .horizontal-scroll-mobile::-webkit-scrollbar, .scroll-fav::-webkit-scrollbar
+  {
+      display: none;
+  }
+
+  .horizontal-scroll-mobile::-webkit-scrollbar-thumb, .scroll-fav::-webkit-scrollbar-thumb
+  {
+      display: none;
+  }
+
 .favorites {
   position: relative;
   bottom: 0;
   .custom-btn {
-    width: 100px;
-    height: 100px;
+    outline: none !important;
+    width: 175px;
+    height: 175px;
     img{
       width: 100%;
       height: auto;
@@ -576,6 +642,9 @@ $mainGreen: #0c9d30;
   color: white !important;
   .ico-exp {
     flex: none !important;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    margin-right: 5px;
   }
 }
 .v-expansion-panel-content {
@@ -583,7 +652,11 @@ $mainGreen: #0c9d30;
   color: black !important;
 }
 .v-application--is-ltr .v-expansion-panel-header {
-  height: 60px;
+  height: 50px;
+}
+.v-expansion-panel--active > .v-expansion-panel-header {
+  min-height: 50px;
+  border-bottom-left-radius: 4px !important;
 }
 .v-expansion-panel-content__wrap {
   padding: 0 !important;
@@ -757,8 +830,35 @@ $mainGreen: #0c9d30;
         }
     }
 }
-
+.search-again-desktop {
+  display: block;
+  margin-left: 40%;
+  width: 20% !important;
+  min-width: 200px !important;
+}
 .no-transition {
   .v-stepper__content { transition: none !important; }
+}
+.v-stepper--vertical .v-stepper__items {
+  margin-top: 110px !important;
+}
+.bg-mainGreen {
+  background: $mainGreen;
+}
+.div-footer-step5 {
+    box-shadow: 0pt 0pt 9pt -2pt #202020;
+    z-index: 2;
+    background: white;
+    position: fixed;
+    display: flex;
+    bottom: 0px;
+    width: -webkit-fill-available;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    button {
+      min-width: unset !important;
+      margin: 5px;
+    }
+    left: 0;
 }
 </style>
